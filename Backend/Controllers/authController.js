@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 export const register = async (req, res) => {
   const { email, password, name, role, gender } = req.body;
   const file = req.file;
+  
 
   try {
     const user = await User.findOne({ email });
