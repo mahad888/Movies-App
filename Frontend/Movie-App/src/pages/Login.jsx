@@ -53,11 +53,9 @@ const Login = () => {
         dispatch(userExist(data.user));
         toast.success(data.message);
 
-        if (data.role === "admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/dashboard");
-        }
+      if(data){
+        navigate('/movies-list')
+      }
       } else {
         toast.error(data.message || "Login failed. Please try again.");
       }

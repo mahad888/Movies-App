@@ -1,40 +1,22 @@
-import User from "../Models/UserSchema";
+import User from "../Models/UserSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-export const register = async (req, res) => {
+export const register = async (req, res) => { 
   const { email, password, name, role, gender } = req.body;
-  const file = req.file;
-  
+  console.log(req.body);
+
 
   try {
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
 
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
-
-    if (!file) {
-      return res
-        .status(401)
-        .json({ status: false, message: "Please upload avatar" });
-    }
     
-    const result = await uploadFilesToCloudinary([file]);
-    console.log(result);
-
-    if (!result || !result[0] || !result[0].public_id || !result[0].url) {
-      return res
-        .status(500)
-        .json({ status: false, message: "Failed to upload avatar" });
-    }
 
     
-    const avatar = {
-      public_id: result[0].public_id,
-      url: result[0].url,
-    };
-
+   
     const hashedPassword = await bcrypt.hash(password, 12);
 
 
@@ -42,10 +24,7 @@ export const register = async (req, res) => {
         email,
         password: hashedPassword,
         name,
-        role,
         gender,
-        avatar,
-        viewedProfile: Math.floor(Math.random()*10000),
       });
     
     await user.save();
@@ -84,9 +63,8 @@ export const login = async (req, res) => {
         expiresIn: "15d",
       }
     );
-    const { password: userPassword, appointments, ...rest } = user._doc;
-    res
-      .status(200)
+    const { password: userPassword, ...rest } = user._doc;
+    res.status(200)
       .json({
         status: "true",
         message: "User logged in successfully",

@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import userRoute from './Routes/userRoute.js';
+
 
 const app = express();
 app.use(express.json());
@@ -20,6 +22,9 @@ const corsOptions = {
   app.use(cookieParser());
   app.use(bodyParser.json());
   app.use(morgan('dev'));
+  app.use('/api/v1/auth',userRoute);
+
+
 
 
   mongoose.set('strictQuery', false);

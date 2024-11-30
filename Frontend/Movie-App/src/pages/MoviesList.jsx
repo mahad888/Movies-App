@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMovies } from "../Redux/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../utils/DarkModeToggle";
+import AppBarComponent from "../Components/AppBar";
 
 const MovieList = () => {
   const [view, setView] = useState("grid"); // 'grid' or 'list'
@@ -61,8 +62,10 @@ const MovieList = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-        <DarkModeToggle/>
+    <>
+    <AppBarComponent/>
+    <Container maxWidth="lg"  sx={{ py: 4 ,marginTop:5}}>
+        
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
         <Typography variant="h4" fontWeight="bold">
           Movies
@@ -146,6 +149,7 @@ const MovieList = () => {
         />
       </Stack>
     </Container>
+    </>
   );
 };
 

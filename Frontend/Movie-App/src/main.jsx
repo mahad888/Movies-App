@@ -29,9 +29,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <HelmetProvider>
         <ThemeWrapper>
-          <div onContextMenu={(e) => e.preventDefault()}>
+          
             <App />
-          </div>
+          
         </ThemeWrapper>
       </HelmetProvider>
     </Provider>

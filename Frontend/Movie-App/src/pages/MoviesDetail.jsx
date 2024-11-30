@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { ArrowBackRounded } from "@mui/icons-material";
+import AppBarComponent from "../Components/AppBar";
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -38,8 +39,10 @@ const MovieDetails = () => {
 
   return (
     <>
+    <AppBarComponent/>
       {/* Back Button */}
-      <Box sx={{ position: "absolute", top: 16, left: 16 }}>
+      <Box marginTop={10} sx={{ position: "absolute", top: 16, left: 16 }}
+      >
         <IconButton onClick={() => navigate("/movies-list")} aria-label="Back">
           <ArrowBackRounded fontSize="large" />
         </IconButton>

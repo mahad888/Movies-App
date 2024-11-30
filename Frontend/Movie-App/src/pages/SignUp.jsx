@@ -30,7 +30,6 @@ import toast from "react-hot-toast";
 
 const SignUp = () => {
   const name = useInputValidation("", nameValidator);
-  const bio = useInputValidation("");
   const email = useInputValidation("", emailValidator);
   const password = useInputValidation("", passwordValidator);
   const confirmPassword = useInputValidation("", (value) => {
@@ -41,19 +40,12 @@ const SignUp = () => {
   });
 
   const gender = useInputValidation("");
-  const role = useInputValidation("");
-  const avatar = useFileHandler("single");
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Validate Avatar
-    if (!avatar.file || !["image/png", "image/jpeg"].includes(avatar.file.type)) {
-      toast.error("Please upload a valid image (PNG or JPEG).");
-      return;
-    }
 
     try {
       const formData = new FormData();
@@ -61,9 +53,6 @@ const SignUp = () => {
       formData.append("password", password.value);
       formData.append("confirmPassword", confirmPassword.value);
       formData.append("name", name.value);
-      formData.append("bio", bio.value);
-      formData.append("role", role.value);
-      formData.append("avatar", avatar.file);
       formData.append("gender", gender.value);
 
       const response = await axios.post(
@@ -71,12 +60,12 @@ const SignUp = () => {
         formData,
         {
           withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": 'application/json' },
         }
       );
 
       toast.success(response.data.message);
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       toast.error(error?.response?.data?.message || "Registration failed.");
     }
@@ -118,27 +107,7 @@ const SignUp = () => {
         </Typography>
 
         <form onSubmit={handleRegister} style={{ marginTop: "1.5rem" }}>
-          {/* Avatar Upload */}
-          <Stack position="relative" width="120px" margin="auto" sx={{ mb: 2 }}>
-            <Avatar
-              sx={{ width: 100, height: 100 }}
-              src={avatar.file ? URL.createObjectURL(avatar.file) : ""}
-            />
-            <IconButton
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                right: 0,
-                backgroundColor: "primary.main",
-                color: "white",
-              }}
-              component="label"
-              aria-label="Upload Avatar"
-            >
-              <CameraAltIcon />
-              <input type="file" hidden onChange={avatar.changeHandler} />
-            </IconButton>
-          </Stack>
+         
 
           {/* Full Name */}
           <TextField
@@ -311,38 +280,7 @@ const SignUp = () => {
 
           </TextField>
 
-          {/* Role */}
-          <TextField
-            select
-            label="Role"
-            fullWidth
-            value={role.value}
-            onChange={role.changeHandler}
-            margin="normal"
-            InputProps={{
-              style: { color: "white" },
-            }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "#ff5722",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#ff5722",
-                },
-              },
-              "& .MuiInputLabel-root": {
-                color: "white",
-              },
-            }}
-          >
-            <MenuItem value="patient">Patient</MenuItem>
-            <MenuItem value="doctor">Doctor</MenuItem>
-          </TextField>
-
+        
           {/* Submit */}
           <Button
             type="submit"
